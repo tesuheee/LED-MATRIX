@@ -5,11 +5,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class LEDMATRIX extends JFrame implements ActionListener {
 	String version = "ver 0.5";
+	JLabel lbl[] = new JLabel[8];
 	LED led[][] = new LED[8][8];
 	JPanel p1 = new JPanel();
 	JPanel p2 = new JPanel();
@@ -37,7 +39,19 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 		reverse.addActionListener(this);
 		reset.addActionListener(this);
 
-		int x = 90, y = 100;
+		// ラベルの生成
+		int x = 98, y = 75;
+		for (int i = 0; i < 8; i++, x += 40) {
+			lbl[i] = new JLabel();
+			lbl[i].setText("B" + i);
+			lbl[i].setLocation(x, y);
+			lbl[i].setSize(30, 30);
+			p1.add(lbl[i]);
+		}
+
+		// マトリクスの生成
+		x = 90;
+		y = 100;
 		for (int i = 0; i < 8; i++, y += 40) {
 			for (int j = 0; j < 8; j++, x += 40) {
 				led[i][j] = new LED(x, y);
@@ -49,21 +63,15 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == reverse) {
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
+		if (e.getSource() == reverse)
+			for (int i = 0; i < 8; i++)
+				for (int j = 0; j < 8; j++)
 					led[i][j].reverse();
-				}
-			}
-		} else if (e.getSource() == reset) {
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
+		else if (e.getSource() == reset)
+			for (int i = 0; i < 8; i++)
+				for (int j = 0; j < 8; j++)
 					led[i][j].setLow();
-				}
-			}
-		}
 	}
-
 }
 
 @SuppressWarnings("serial")
