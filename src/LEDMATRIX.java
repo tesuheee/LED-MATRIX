@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class LEDMATRIX extends JFrame implements ActionListener {
@@ -17,6 +18,7 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 	JPanel p2 = new JPanel();
 	JButton reverse = new JButton("反転");
 	JButton reset = new JButton("リセット");
+	JTextField tf = new JTextField();
 
 	public static void main(String[] args) {
 		LEDMATRIX f = new LEDMATRIX();
@@ -30,10 +32,16 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 
+		tf.setSize(400, 40);
+		tf.setLocation(50, 20);
+		tf.setBorder(null);
+		tf.setBackground(new Color(240, 240, 240));
+		tf.setText("int ptn[8] = {}");
 		p1.setLayout(null);
 		p2.setLayout(new BorderLayout());
 		add(p1, BorderLayout.CENTER);
 		add(p2, BorderLayout.SOUTH);
+		p1.add(tf);
 		p2.add(reverse, BorderLayout.EAST);
 		p2.add(reset, BorderLayout.WEST);
 		reverse.addActionListener(this);
@@ -82,6 +90,7 @@ class LED extends JButton implements ActionListener {
 		setSize(30, 30);
 		setLocation(x, y);
 		setBackground(Color.WHITE);
+		setBorderPainted(false);
 		addActionListener(this);
 	}
 
