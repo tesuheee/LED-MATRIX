@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,11 +34,13 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 
-		tf.setSize(400, 40);
-		tf.setLocation(100, 20);
+		tf.setSize(500, 40);
+		tf.setLocation(0, 20);
+		tf.setHorizontalAlignment(JLabel.CENTER);
+		tf.setFont(new Font("", 0, 15));
 		tf.setBorder(null);
 		tf.setBackground(new Color(240, 240, 240));
-		tf.setText("int ptn[8] = {}");
+		tf.setText("int ptn[8] = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}");
 		p1.setLayout(null);
 		p2.setLayout(new BorderLayout());
 		add(p1, BorderLayout.CENTER);
@@ -134,7 +137,7 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 			for (int i = 0; i < 8; i++) {
 				ary[i] = led[i][0].getNum() * 128 + led[i][1].getNum() * 64 + led[i][2].getNum() * 32 + led[i][3].getNum() * 16 + led[i][4].getNum() * 8 + led[i][5].getNum() * 4 + led[i][6].getNum() * 2 + led[i][7].getNum() * 1;
 			}
-			tf.setText("int ptn[8] = { " + Integer.toHexString(ary[0]) + ", " +  Integer.toHexString(ary[1]) + ", " +  Integer.toHexString(ary[2]) + ", " +  Integer.toHexString(ary[3]) + ", " +  Integer.toHexString(ary[4]) + ", " +  Integer.toHexString(ary[5]) + ", " +  Integer.toHexString(ary[6]) + ", " +  Integer.toHexString(ary[7]) + " };");
+			tf.setText("int ptn[8] = { " + "0x"+Integer.toHexString(ary[0]) + ", " +  "0x"+Integer.toHexString(ary[1]) + ", " +  "0x"+Integer.toHexString(ary[2]) + ", " +  "0x"+Integer.toHexString(ary[3]) + ", " +  "0x"+Integer.toHexString(ary[4]) + ", " +  "0x"+Integer.toHexString(ary[5]) + ", " +  "0x"+Integer.toHexString(ary[6]) + ", " +  "0x"+Integer.toHexString(ary[7]) + " };");
 		}
 	}
 }
