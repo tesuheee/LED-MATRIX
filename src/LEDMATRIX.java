@@ -19,6 +19,7 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 	JButton reverse = new JButton("反転");
 	JButton reset = new JButton("リセット");
 	JTextField tf = new JTextField();
+	int ary[] = new int[8];
 
 	public static void main(String[] args) {
 		LEDMATRIX f = new LEDMATRIX();
@@ -33,7 +34,7 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 
 		tf.setSize(400, 40);
-		tf.setLocation(50, 20);
+		tf.setLocation(100, 20);
 		tf.setBorder(null);
 		tf.setBackground(new Color(240, 240, 240));
 		tf.setText("int ptn[8] = {}");
@@ -80,42 +81,60 @@ public class LEDMATRIX extends JFrame implements ActionListener {
 				for (int j = 0; j < 8; j++)
 					led[i][j].setLow();
 	}
-}
 
-@SuppressWarnings("serial")
-class LED extends JButton implements ActionListener {
-	boolean H = false;
-
-	public LED(int x, int y) {
-		setSize(30, 30);
-		setLocation(x, y);
-		setBackground(Color.WHITE);
-		setBorderPainted(false);
-		addActionListener(this);
+	public int letCheck(int col) {
+		int num = 0;
+		for (int i = 0; i < 8; i++) {
+			num = num + led[col][i].getNum();
+		}
+		return num;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		H = !H;
-		update();
-	}
+	class LED extends JButton implements ActionListener {
+		boolean H = false;
 
-	public void reverse() {
-		H = !H;
-		update();
-	}
-
-	public void setLow() {
-		H = false;
-		update();
-	}
-
-	void update() {
-		if (H) {
-			setBackground(Color.RED);
-		} else {
+		public LED(int x, int y) {
+			setSize(30, 30);
+			setLocation(x, y);
 			setBackground(Color.WHITE);
+			setBorderPainted(false);
+			addActionListener(this);
+		}
+
+		public int getNum() {
+			if (H) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			H = !H;
+			update();
+		}
+
+		public void reverse() {
+			H = !H;
+			update();
+		}
+
+		public void setLow() {
+			H = false;
+			update();
+		}
+
+		void update() {
+			if (H) {
+				setBackground(Color.RED);
+			} else {
+				setBackground(Color.WHITE);
+			}
+			for (int i = 0; i < 8; i++) {
+				ary[i] = led[i][0].getNum() * 128 + led[i][1].getNum() * 64 + led[i][2].getNum() * 32 + led[i][3].getNum() * 16 + led[i][4].getNum() * 8 + led[i][5].getNum() * 4 + led[i][6].getNum() * 2 + led[i][7].getNum() * 1;
+			}
+			tf.setText("int ptn[8] = { " + Integer.toHexString(ary[0]) + ", " +  Integer.toHexString(ary[1]) + ", " +  Integer.toHexString(ary[2]) + ", " +  Integer.toHexString(ary[3]) + ", " +  Integer.toHexString(ary[4]) + ", " +  Integer.toHexString(ary[5]) + ", " +  Integer.toHexString(ary[6]) + ", " +  Integer.toHexString(ary[7]) + " };");
 		}
 	}
-
 }
