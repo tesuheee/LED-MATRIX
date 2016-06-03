@@ -17,15 +17,15 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class LEDMATRIX extends JFrame implements ActionListener, ItemListener {
-	String version = "ver 0.5";
+	String version = "ver 0.9";
 	JLabel lbl[] = new JLabel[8];
 	LED led[][] = new LED[8][8];
 	JPanel p1 = new JPanel();
 	JPanel p2 = new JPanel();
 	JPanel p3 = new JPanel();
 	CheckboxGroup cbg = new CheckboxGroup();
-	Checkbox cb1  = new Checkbox("10進数", cbg, false);
-	Checkbox cb2  = new Checkbox("16進数", cbg, true);
+	Checkbox cb1 = new Checkbox("10進数", cbg, false);
+	Checkbox cb2 = new Checkbox("16進数", cbg, true);
 	JButton reverse = new JButton("反転");
 	JButton reset = new JButton("リセット");
 	JTextField tf = new JTextField();
@@ -49,7 +49,11 @@ public class LEDMATRIX extends JFrame implements ActionListener, ItemListener {
 		tf.setFont(new Font("", 0, 15));
 		tf.setBorder(null);
 		tf.setBackground(new Color(240, 240, 240));
-		tf.setText("int pat[8] = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}");
+		tf.setText("int pat[8] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };");
+		cb1.addItemListener(this);
+		cb2.addItemListener(this);
+		reverse.addActionListener(this);
+		reset.addActionListener(this);
 		p1.setLayout(null);
 		p2.setLayout(new BorderLayout());
 		p3.setLayout(new FlowLayout());
@@ -61,10 +65,6 @@ public class LEDMATRIX extends JFrame implements ActionListener, ItemListener {
 		p2.add(p3, BorderLayout.CENTER);
 		p3.add(cb1);
 		p3.add(cb2);
-		reverse.addActionListener(this);
-		reset.addActionListener(this);
-		cb1.addItemListener(this);
-		cb2.addItemListener(this);
 
 		// ラベルの生成
 		int x = 98, y = 75;
@@ -121,9 +121,9 @@ public class LEDMATRIX extends JFrame implements ActionListener, ItemListener {
 
 		public int getNum() {
 			if (H) {
-				return 1;
+				return 0; //カソード側なのでLにして点灯させる
 			} else {
-				return 0;
+				return 1;
 			}
 		}
 
@@ -149,20 +149,20 @@ public class LEDMATRIX extends JFrame implements ActionListener, ItemListener {
 			} else {
 				setBackground(Color.WHITE);
 			}
+			// ひどいところ
 			for (int i = 0; i < 8; i++) {
 				ary[i] = led[i][0].getNum() * 128 + led[i][1].getNum() * 64 + led[i][2].getNum() * 32 + led[i][3].getNum() * 16 + led[i][4].getNum() * 8 + led[i][5].getNum() * 4 + led[i][6].getNum() * 2 + led[i][7].getNum() * 1;
 			}
-			if(cb1.getState()) {
-				tf.setText("int pat[8] = { "+ ary[0] + ", " +ary[1] + ", " + ary[2] + ", " + ary[3] + ", " + ary[4] + ", " + ary[5] + ", " + ary[6] + ", " + ary[7] + " };");
-			}else {
-				tf.setText("int pat[8] = { " + "0x"+Integer.toHexString(ary[0]) + ", " +  "0x"+Integer.toHexString(ary[1]) + ", " +  "0x"+Integer.toHexString(ary[2]) + ", " +  "0x"+Integer.toHexString(ary[3]) + ", " +  "0x"+Integer.toHexString(ary[4]) + ", " +  "0x"+Integer.toHexString(ary[5]) + ", " +  "0x"+Integer.toHexString(ary[6]) + ", " +  "0x"+Integer.toHexString(ary[7]) + " };");
+			if (cb1.getState()) {
+				tf.setText("int pat[8] = { " + ary[0] + ", " + ary[1] + ", " + ary[2] + ", " + ary[3] + ", " + ary[4] + ", " + ary[5] + ", " + ary[6] + ", " + ary[7] + " };");
+			} else {
+				tf.setText("int pat[8] = { " + "0x" + Integer.toHexString(ary[0]) + ", " + "0x" + Integer.toHexString(ary[1]) + ", " + "0x" + Integer.toHexString(ary[2]) + ", " + "0x" + Integer.toHexString(ary[3]) + ", " + "0x" + Integer.toHexString(ary[4]) + ", " + "0x" + Integer.toHexString(ary[5]) + ", " + "0x" + Integer.toHexString(ary[6]) + ", " + "0x" + Integer.toHexString(ary[7]) + " };");
 			}
 		}
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				led[i][j].update();
